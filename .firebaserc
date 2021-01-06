@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "embedded-c-stm32-web-react"
+  }
+}
