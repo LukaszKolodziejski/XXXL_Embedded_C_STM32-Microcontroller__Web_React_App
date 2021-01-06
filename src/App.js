@@ -4,17 +4,19 @@ import axios from "./axios-data";
 import "./App.css";
 
 const App = () => {
-  const [reciveTextStm32, setReciveTextStm32] = useState("Recive text");
+  const [lux, setLux] = useState(0);
   const [serialPort, setSerialPort] = useState(null);
-  const [zipPercent, setZipPercent] = useState(0);
+  const [zipPercent, setZipPercent] = useState(23);
   const [data, setData] = useState({
     leds: {
-      ID: 1,
-      name: "LDR1",
-      type: "R",
-      state: 1,
+      lux: 1000,
+      percent: 100,
     },
   });
+  // percent: 100,
+  // ID: 1,
+  // type: "R",
+  // name: "LDR1",
 
   useEffect(() => {
     // axios
@@ -24,7 +26,7 @@ const App = () => {
     axios
       .get("/leds.json")
       .then((res) => {
-        setReciveTextStm32(res.data.name);
+        setLux(res.data.lux);
         console.log(JSON.stringify(res.data));
       })
       .catch((err) => console.log(err));
@@ -49,7 +51,7 @@ const App = () => {
           console.log("textDecoder");
           // console.log(textDecoder);
           console.log("<<<<<<<<<<<");
-          setReciveTextStm32(textDecoder);
+          setLux(textDecoder);
         }
       } catch (error) {
       } finally {
@@ -59,29 +61,12 @@ const App = () => {
     await port.close();
   }
 
-  async function writeToStream(value) {
-    const newData = {
-      ID: 1,
-      name: value,
-      type: "R",
-      state: 1,
-    };
-
-    setData({ leds: newData });
-    axios.put("/leds.json", newData).then((res) => {
-      setReciveTextStm32(res.data.name);
-      console.log(JSON.stringify(res.data));
-    });
-
+  async function writeToStream(newData) {
     const encoder = new TextEncoder();
     const writer = serialPort.writable.getWriter();
     await writer.write(encoder.encode(JSON.stringify(newData)));
     writer.releaseLock();
   }
-
-  const streamHandler = (value) => {
-    serialPort ? writeToStream(value) : setReciveTextStm32("Click Start !!!");
-  };
 
   const keyDownHandler = (key) => {
     if (key === "up") {
@@ -92,6 +77,22 @@ const App = () => {
       console.log(key);
     }
   };
+
+  useEffect(() => {
+    const newData = {
+      ...data.leds,
+      percent: zipPercent + 100,
+    };
+    setData({ leds: newData });
+
+    const timer = setTimeout(() => {
+      axios.put("/leds.json", newData).then((res) => {
+        if (serialPort !== null) writeToStream(newData);
+        console.log(JSON.stringify(res.data));
+      });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [zipPercent]);
 
   return (
     <div className="App">
@@ -113,30 +114,21 @@ const App = () => {
           </div>
         </div>
         <div className="LedSections">
-          <div className="Recive">{reciveTextStm32}</div>
+          <div className="Recive">{lux} lux</div>
           <br />
           <div className="LedSection">
-            <div className="Led" onClick={() => streamHandler("LDR1")}>
-              RED On
-            </div>
-            <div className="Led" onClick={() => streamHandler("LDR0")}>
-              RED Off
+            <div className="Led" onClick={() => setZipPercent(75)}>
+              Red 75
             </div>
           </div>
           <div className="LedSection">
-            <div className="Led" onClick={() => streamHandler("LDB1")}>
-              Blue On
-            </div>
-            <div className="Led" onClick={() => streamHandler("LDB0")}>
-              Blue Off
+            <div className="Led" onClick={() => setZipPercent(50)}>
+              Blue 50
             </div>
           </div>
           <div className="LedSection">
-            <div className="Led" onClick={() => streamHandler("LDG1")}>
-              Green On
-            </div>
-            <div className="Led" onClick={() => streamHandler("LDG0")}>
-              Green Off
+            <div className="Led" onClick={() => setZipPercent(25)}>
+              Green 25
             </div>
           </div>
         </div>
