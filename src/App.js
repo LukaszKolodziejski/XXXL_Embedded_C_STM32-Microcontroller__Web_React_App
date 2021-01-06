@@ -6,7 +6,7 @@ import "./App.css";
 const App = () => {
   const [reciveTextStm32, setReciveTextStm32] = useState("Recive text");
   const [serialPort, setSerialPort] = useState(null);
-  const [zipPercent, setZipPercent] = useState(0);
+  const [zipPercent, setZipPercent] = useState(23);
   const [data, setData] = useState({
     leds: {
       ID: 1,
@@ -59,23 +59,21 @@ const App = () => {
     await port.close();
   }
 
-  async function writeToStream(value) {
-    const newData = {
-      ID: 1,
-      name: value,
-      type: "R",
-      state: 1,
-    };
+  async function writeToStream(newData) {
+    // const newData = {
+    //     ...data.leds,
+    //     name: value,
+    // };
 
-    setData({ leds: newData });
-    axios.put("/leds.json", newData).then((res) => {
-      setReciveTextStm32(res.data.name);
-      console.log(JSON.stringify(res.data));
-    });
-
+    // setData({ leds: newData });
+    // axios.put("/leds.json", newData).then((res) => {
+    //   setReciveTextStm32(res.data.name);
+    //   console.log(JSON.stringify(res.data));
+    // });
     const encoder = new TextEncoder();
     const writer = serialPort.writable.getWriter();
     await writer.write(encoder.encode(JSON.stringify(newData)));
+    // writer.write(encoder.encode(JSON.stringify(newData)));
     writer.releaseLock();
   }
 
@@ -92,6 +90,23 @@ const App = () => {
       console.log(key);
     }
   };
+
+  useEffect(() => {
+    const newData = {
+      ...data.leds,
+      state: zipPercent + 100,
+    };
+    setData({ leds: newData });
+
+    const timer = setTimeout(() => {
+      axios.put("/leds.json", newData).then((res) => {
+        // setReciveTextStm32(res.data.state);
+        if (serialPort !== null) writeToStream(newData);
+        console.log(JSON.stringify(res.data));
+      });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [zipPercent]);
 
   return (
     <div className="App">
