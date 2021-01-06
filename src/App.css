@@ -42,9 +42,12 @@
 .Led {
   display: block;
   width: 120px;
+  padding: 10px 25px;
   background-color: rgb(105, 80, 80);
   border-radius: 10px;
   border: 2px solid #000;
+  cursor: pointer;
+  font-size: 30px;
 }
 
 .LedSections {
@@ -66,7 +69,6 @@
   justify-content: space-evenly;
   border-radius: 10px;
   margin: 10px 0;
-  cursor: pointer;
 }
 
 .Modifier {
@@ -87,7 +89,7 @@
   box-shadow: 0px 0px 20px 0px rgba(13, 158, 230, 0.673);
   border-radius: 30px;
   margin-top: 50vh;
-  /* margin-top: 0vh; */
+  z-index: 5;
 }
 
 .Percent {
