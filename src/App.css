@@ -43,11 +43,19 @@
   display: block;
   width: 120px;
   padding: 10px 25px;
-  background-color: rgb(105, 80, 80);
+  background-color: rgba(105, 80, 80, 0.564);
   border-radius: 10px;
   border: 2px solid #000;
   cursor: pointer;
-  font-size: 30px;
+  font-size: 28px;
+  color: #000;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.Led:hover {
+  transform: translateX(5px);
+  box-shadow: -5px 2px 5px 1px #000;
 }
 
 .LedSections {
@@ -64,11 +72,12 @@
   flex-direction: row;
   width: 350px;
   height: 100px;
-  background-color: rgb(100, 85, 85);
   align-items: center;
   justify-content: space-evenly;
   border-radius: 10px;
+  border: 2px solid rgb(100, 85, 85);
   margin: 10px 0;
+  transition: 1s;
 }
 
 .Modifier {
