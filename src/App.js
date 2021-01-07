@@ -10,9 +10,9 @@ const App = () => {
   const [activeState, setActiveState] = useState(true);
 
   useEffect(() => {
-    let delay = 1500;
+    let delay = 1100;
     setInterval(() => {
-      delay = serialPort !== null ? 1500 : 500;
+      delay = serialPort !== null ? 1100 : 500;
       if (activeState) {
         // if (active) {
         axios
