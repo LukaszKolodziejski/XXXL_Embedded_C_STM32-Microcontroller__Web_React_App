@@ -14,12 +14,10 @@ const App = () => {
     setInterval(() => {
       delay = serialPort !== null ? 1100 : 500;
       if (activeState) {
-        // if (active) {
         axios
           .get("/leds.json")
           .then((res) => res.data)
           .then(({ lux, percent }) => {
-            console.log("json");
             setLux(lux);
             setZipPercent(percent);
           })
@@ -73,7 +71,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("zipPercent");
     const newData = {
       lux: lux + 1000,
       percent: zipPercent + 100,
@@ -89,6 +86,10 @@ const App = () => {
     return () => clearTimeout(timer);
   }, [zipPercent]);
 
+  const brounColor = "rgba(100, 85, 85,1)";
+  const greenColor = "rgba(26, 223, 56, 0.564)";
+  const blueColor = "rgba(24, 16, 250, 0.564)";
+  const redColor = "rgba(235, 60, 6, 0.564)";
   return (
     <div className="App">
       <header className="App-header" onKeyPress={keyDownHandler}>
@@ -103,7 +104,7 @@ const App = () => {
           handleKeys={["up", "down"]}
           onKeyEvent={keyDownHandler}
         />
-        <div className="LedSections">
+        <div className="ModifierSections">
           <div className="Percent">{zipPercent}%</div>
           <div className="Modifier">
             <div
@@ -115,17 +116,32 @@ const App = () => {
         <div className="LedSections">
           <div className="Recive">{lux} lux</div>
           <br />
-          <div className="LedSection">
+          <div
+            className="LedSection"
+            style={{
+              backgroundColor: zipPercent >= 75 ? redColor : brounColor,
+            }}
+          >
             <div className="Led" onClick={() => setZipPercent(75)}>
               Red 75
             </div>
           </div>
-          <div className="LedSection">
+          <div
+            className="LedSection"
+            style={{
+              backgroundColor: zipPercent >= 50 ? blueColor : brounColor,
+            }}
+          >
             <div className="Led" onClick={() => setZipPercent(50)}>
               Blue 50
             </div>
           </div>
-          <div className="LedSection">
+          <div
+            className="LedSection"
+            style={{
+              backgroundColor: zipPercent >= 25 ? greenColor : brounColor,
+            }}
+          >
             <div className="Led" onClick={() => setZipPercent(25)}>
               Green 25
             </div>
