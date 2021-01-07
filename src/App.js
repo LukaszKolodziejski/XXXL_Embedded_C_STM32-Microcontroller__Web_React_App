@@ -7,15 +7,25 @@ const App = () => {
   const [lux, setLux] = useState(0);
   const [zipPercent, setZipPercent] = useState(50);
   const [serialPort, setSerialPort] = useState(null);
+  const [activeState, setActiveState] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("/leds.json")
-      .then((res) => {
-        setLux(res.data.lux);
-        setZipPercent(res.data.percent);
-      })
-      .catch((err) => console.log(err));
+    let delay = 1100;
+    setInterval(() => {
+      delay = serialPort !== null ? 1100 : 500;
+      if (activeState) {
+        // if (active) {
+        axios
+          .get("/leds.json")
+          .then((res) => res.data)
+          .then(({ lux, percent }) => {
+            console.log("json");
+            setLux(lux);
+            setZipPercent(percent);
+          })
+          .catch((err) => console.log(err));
+      }
+    }, delay);
   }, []);
 
   async function getReader() {
@@ -56,23 +66,26 @@ const App = () => {
 
   const keyDownHandler = (key) => {
     if (key === "up") {
-      setZipPercent((prevData) => (prevData < 100 ? prevData + 1 : prevData));
+      setZipPercent((prevData) => (prevData < 100 ? prevData + 2 : prevData));
     } else if (key === "down") {
-      setZipPercent((prevData) => (prevData > 0 ? prevData - 1 : prevData));
+      setZipPercent((prevData) => (prevData > 0 ? prevData - 2 : prevData));
     }
   };
 
   useEffect(() => {
+    console.log("zipPercent");
     const newData = {
       lux: lux + 1000,
       percent: zipPercent + 100,
     };
-
+    let delay = serialPort !== null ? 50 : 0;
+    setActiveState(false);
     const timer = setTimeout(() => {
       axios.put("/leds.json", { lux, percent: zipPercent }).then((res) => {
         if (serialPort !== null) writeToStream(newData);
       });
-    }, 50);
+    }, delay);
+    setActiveState(true);
     return () => clearTimeout(timer);
   }, [zipPercent]);
 
