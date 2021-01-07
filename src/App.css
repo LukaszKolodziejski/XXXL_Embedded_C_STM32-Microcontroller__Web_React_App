@@ -11,6 +11,7 @@
   justify-content: space-evenly;
   font-size: calc(10px + 2vmin);
   color: white;
+  overflow: hidden;
 }
 
 .Recive {
@@ -37,6 +38,11 @@
   color: #fff;
   font-size: 16px;
   font-weight: bold;
+}
+@media only screen and (max-width: 600px) {
+  .Start {
+    display: none;
+  }
 }
 
 .Led {
