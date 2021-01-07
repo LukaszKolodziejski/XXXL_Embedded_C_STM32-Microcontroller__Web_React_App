@@ -104,7 +104,7 @@ const App = () => {
           handleKeys={["up", "down"]}
           onKeyEvent={keyDownHandler}
         />
-        <div className="LedSections">
+        <div className="ModifierSections">
           <div className="Percent">{zipPercent}%</div>
           <div className="Modifier">
             <div
