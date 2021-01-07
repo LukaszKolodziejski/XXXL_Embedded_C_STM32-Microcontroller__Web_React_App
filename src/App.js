@@ -5,32 +5,18 @@ import "./App.css";
 
 const App = () => {
   const [lux, setLux] = useState(0);
+  const [zipPercent, setZipPercent] = useState(50);
   const [serialPort, setSerialPort] = useState(null);
-  const [zipPercent, setZipPercent] = useState(23);
-  const [data, setData] = useState({
-    leds: {
-      lux: 1000,
-      percent: 100,
-    },
-  });
-  // percent: 100,
-  // ID: 1,
-  // type: "R",
-  // name: "LDR1",
 
   useEffect(() => {
-    // axios
-    //   .post("/leds.json", data)
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
     axios
       .get("/leds.json")
       .then((res) => {
         setLux(res.data.lux);
-        console.log(JSON.stringify(res.data));
+        setZipPercent(res.data.percent);
       })
       .catch((err) => console.log(err));
-  }, [data]);
+  }, []);
 
   async function getReader() {
     const port = await navigator.serial.requestPort();
@@ -48,10 +34,10 @@ const App = () => {
             break;
           }
           const textDecoder = new TextDecoder("utf-8").decode(value);
-          console.log("textDecoder");
-          // console.log(textDecoder);
-          console.log("<<<<<<<<<<<");
-          setLux(textDecoder);
+          const jsonData = JSON.parse(textDecoder);
+          setLux(jsonData.lux);
+          setZipPercent(jsonData.percent);
+          axios.put("/leds.json", jsonData);
         }
       } catch (error) {
       } finally {
@@ -71,24 +57,20 @@ const App = () => {
   const keyDownHandler = (key) => {
     if (key === "up") {
       setZipPercent((prevData) => (prevData < 100 ? prevData + 1 : prevData));
-      console.log(key);
     } else if (key === "down") {
       setZipPercent((prevData) => (prevData > 0 ? prevData - 1 : prevData));
-      console.log(key);
     }
   };
 
   useEffect(() => {
     const newData = {
-      ...data.leds,
+      lux: lux + 1000,
       percent: zipPercent + 100,
     };
-    setData({ leds: newData });
 
     const timer = setTimeout(() => {
-      axios.put("/leds.json", newData).then((res) => {
+      axios.put("/leds.json", { lux, percent: zipPercent }).then((res) => {
         if (serialPort !== null) writeToStream(newData);
-        console.log(JSON.stringify(res.data));
       });
     }, 50);
     return () => clearTimeout(timer);
@@ -97,8 +79,12 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header" onKeyPress={keyDownHandler}>
-        <button className="Start" onClick={getReader}>
-          Start
+        <button
+          className="Start"
+          onClick={getReader}
+          disabled={serialPort ? true : false}
+        >
+          {serialPort ? "Connected" : "Start"}
         </button>
         <KeyboardEventHandler
           handleKeys={["up", "down"]}
