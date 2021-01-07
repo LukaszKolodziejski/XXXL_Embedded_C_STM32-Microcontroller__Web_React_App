@@ -59,62 +59,78 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-char led_code[56];
+char json_data[26];
+
+void transmit_IT_Json_Data(int percent, int lux );
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart-> Instance == USART3){
 
-	  //char led_code [56]="{ \"ID\": \"1\", \"name\": \"LDR1\", \"type\": \"R\", \"state\": \"1\" }";
+	  //char json_data [26]="{\"lux\":1000,\"percent\":100}";
 
-	  char id [2];
-	  char name [5];
-	  char type [1];
-	  char state [1];
+	  int percent [1];
+	  int lux [1];
 	  char * pch;
 
-	  pch = strtok (led_code," \":,{}");
+	  pch = strtok (json_data," \":,{}");
 
 	   while (pch != NULL)
 	  {
-	    if(strcmp( pch, "ID" ) == 0){
+	    if(strcmp( pch, "percent" ) == 0){
 	        pch = strtok (NULL, " \":,{}");
-	        sscanf (pch,"%s",id);
-	    } else if(strcmp( pch, "name" ) == 0){
+	        sscanf (pch,"%d",percent);
+	    } else if(strcmp( pch, "lux" ) == 0){
 	        pch = strtok (NULL, " \":,{}");
-	        sscanf (pch,"%s",name);
-	    } else if(strcmp( pch, "type" ) == 0){
-	        pch = strtok (NULL, " \":,{}");
-	        sscanf (pch,"%s",type);
-	    } else if(strcmp( pch, "state" ) == 0){
-	        pch = strtok (NULL, " \":,{}");
-	        sscanf (pch,"%s",state);
+	        sscanf (pch,"%d",lux);
 	    }
 	    pch = strtok (NULL, " \":,{}");
 	  }
+	   lux[0] -= 1000;
+	   percent[0] -= 100;
 
-        char LED_on[3][5]={"LDR1","LDB1","LDG1"};
-        char LED_off[3][5]={"LDR0","LDB0","LDG0"};
-
-        // RED
-		if(strcmp(name, LED_on[0])==0)
-			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
-		else if(strcmp(name, LED_off[0])==0)
-			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
-
-        // BLUE
-		if(strcmp(name, LED_on[1])==0)
-			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
-		else if(strcmp(name, LED_off[1])==0)
-			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
-
-        // GREEN
-		if(strcmp(name, LED_on[2])==0)
-			HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
-		else if(strcmp(name, LED_off[2])==0)
+	   if(percent[0]<25){
 			HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
+	   }else if((percent[0]>=25)&&(percent[0]<50)){
+			HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
+	   }else if((percent[0]>=50)&&(percent[0]<75)){
+			HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
+	   }else if(percent[0]>=75){
+			HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
+	   }
 
-		HAL_UART_Transmit_IT(&huart3, (uint8_t*)led_code, 56);
-		HAL_UART_Receive_IT(&huart3, (uint8_t*)led_code, 56);
+	   // ...
+	   // Tutaj powinna być funkcja, która weźmie percent[0] jako argument i przetworzy na LUX
+	   // ...
+
+	   // Tą funkcję niżej możesz przenieść tam gdzie będzie nowa przetworzona wartość Lux
+	   // ..................np. transmit_IT_Json_Data(old_Percent, new_Lux );
+	   transmit_IT_Json_Data(percent[0], lux[0] );
+	   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+	   HAL_UART_Receive_IT(&huart3, (uint8_t*)json_data, 26);
+
+	}
+}
+
+void transmit_IT_Json_Data(int percent, int lux ){
+	if((0 <= percent) && (percent <= 100) && (0 <= lux) && (lux <= 1000)){
+		char new_Json_Data[26];
+
+		// Jak będzie rzeczywisty lux, to będziesz mógł zastąpić: oszukane_lux -> lux
+		int oszukane_lux = percent + 100;
+		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", oszukane_lux, percent);
+		//....
+
+		HAL_UART_Transmit_IT(&huart3, (uint8_t*)new_Json_Data, n);
 	}
 }
 
@@ -153,7 +169,7 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_UART_Receive_IT(&huart3, (uint8_t*)led_code, 56);
+  HAL_UART_Receive_IT(&huart3, (uint8_t*)json_data, 26);
 
   /* USER CODE END 2 */
 
