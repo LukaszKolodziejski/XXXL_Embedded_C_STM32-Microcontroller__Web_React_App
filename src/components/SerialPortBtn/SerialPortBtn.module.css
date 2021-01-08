@@ -1,0 +1,17 @@
+.SerialPortBtn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: rgb(103, 154, 105);
+  border: 3px solid rgb(64, 56, 56);
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+@media only screen and (max-width: 600px) {
+  .SerialPortBtn {
+    display: none;
+  }
+}
