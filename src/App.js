@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 import axios from "./axios-data";
+import Keyboard from "./components/Keyboard";
+import * as color from "./constant/color";
+import Layout from "./layout/Layout";
 import "./App.css";
 
 const App = () => {
@@ -62,14 +64,6 @@ const App = () => {
     writer.releaseLock();
   }
 
-  const keyDownHandler = (key) => {
-    if (key === "up") {
-      setZipPercent((prevData) => (prevData < 100 ? prevData + 2 : prevData));
-    } else if (key === "down") {
-      setZipPercent((prevData) => (prevData > 0 ? prevData - 2 : prevData));
-    }
-  };
-
   useEffect(() => {
     const newData = {
       lux: lux + 1000,
@@ -86,69 +80,61 @@ const App = () => {
     return () => clearTimeout(timer);
   }, [zipPercent]);
 
-  const brounColor = "rgba(100, 85, 85,1)";
-  const greenColor = "rgba(26, 223, 56, 0.564)";
-  const blueColor = "rgba(24, 16, 250, 0.564)";
-  const redColor = "rgba(235, 60, 6, 0.564)";
   return (
-    <div className="App">
-      <header className="App-header" onKeyPress={keyDownHandler}>
-        <button
-          className="Start"
-          onClick={getReader}
-          disabled={serialPort ? true : false}
+    <Layout>
+      <Keyboard keys={["up", "down"]} onChangePercent={setZipPercent} />
+      <button
+        className="Start"
+        onClick={getReader}
+        disabled={serialPort ? true : false}
+      >
+        {serialPort ? "Connected" : "Start"}
+      </button>
+      <div className="ModifierSections">
+        <div className="Percent">{zipPercent}%</div>
+        <div className="Modifier">
+          <div
+            className="Zip"
+            style={{ marginTop: `${50 - zipPercent / 2}vh` }}
+          ></div>
+        </div>
+      </div>
+      <div className="LedSections">
+        <div className="Recive">{lux} lux</div>
+        <br />
+        <div
+          className="LedSection"
+          style={{
+            // backgroundColor: zipPercent >= 75 ? redColor : brounColor,
+            backgroundColor: zipPercent >= 75 ? color.red : color.broun,
+          }}
         >
-          {serialPort ? "Connected" : "Start"}
-        </button>
-        <KeyboardEventHandler
-          handleKeys={["up", "down"]}
-          onKeyEvent={keyDownHandler}
-        />
-        <div className="ModifierSections">
-          <div className="Percent">{zipPercent}%</div>
-          <div className="Modifier">
-            <div
-              className="Zip"
-              style={{ marginTop: `${50 - zipPercent / 2}vh` }}
-            ></div>
+          <div className="Led" onClick={() => setZipPercent(75)}>
+            Red 75
           </div>
         </div>
-        <div className="LedSections">
-          <div className="Recive">{lux} lux</div>
-          <br />
-          <div
-            className="LedSection"
-            style={{
-              backgroundColor: zipPercent >= 75 ? redColor : brounColor,
-            }}
-          >
-            <div className="Led" onClick={() => setZipPercent(75)}>
-              Red 75
-            </div>
-          </div>
-          <div
-            className="LedSection"
-            style={{
-              backgroundColor: zipPercent >= 50 ? blueColor : brounColor,
-            }}
-          >
-            <div className="Led" onClick={() => setZipPercent(50)}>
-              Blue 50
-            </div>
-          </div>
-          <div
-            className="LedSection"
-            style={{
-              backgroundColor: zipPercent >= 25 ? greenColor : brounColor,
-            }}
-          >
-            <div className="Led" onClick={() => setZipPercent(25)}>
-              Green 25
-            </div>
+        <div
+          className="LedSection"
+          style={{
+            backgroundColor: zipPercent >= 50 ? color.blue : color.broun,
+          }}
+        >
+          <div className="Led" onClick={() => setZipPercent(50)}>
+            Blue 50
           </div>
         </div>
-      </header>
-    </div>
+        <div
+          className="LedSection"
+          style={{
+            backgroundColor: zipPercent >= 25 ? color.green : color.broun,
+          }}
+        >
+          <div className="Led" onClick={() => setZipPercent(25)}>
+            Green 25
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
