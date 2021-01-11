@@ -7,7 +7,7 @@ const LedSections = (props) => {
   const { lux, percent, onSetPercent } = props;
   return (
     <div className={styles.LedSections}>
-      <div className={styles.Lux}>{lux} lux</div>
+      <div className={styles.Lux}>Get: {lux} lux</div>
       <LedSection
         name="Red"
         detectValue={75}

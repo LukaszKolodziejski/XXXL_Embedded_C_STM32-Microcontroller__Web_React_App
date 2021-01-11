@@ -18,7 +18,7 @@ const LedSection = (props) => {
       }}
     >
       <div className={styles.Led} onClick={() => onSetPercent(detectValue)}>
-        {name} {detectValue}
+        {name} {detectValue * 10}
       </div>
     </div>
   );
