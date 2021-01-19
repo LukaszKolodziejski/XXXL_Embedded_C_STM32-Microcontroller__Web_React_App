@@ -20,6 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "eth.h"
+#include "i2c.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_otg.h"
 #include "gpio.h"
@@ -28,6 +30,8 @@
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
 #include "string.h"
+#include "bh1750.h"
+#include "bh1750_config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +64,17 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 
 char json_data[26];
+// sterowany przez www
+int RED_procent = 0;
+// BLUE prawdopodobnie sterowany bedzie enkoderem
+int BLUE_procent = 0;
+// odczytywane przez www
+int luks_ustawione = 50;
+// odczytywane w petli
+int luks_odczytane = 50;
+int uchyb = 0;
+// stale
+float k = 0.5;
 
 void transmit_IT_Json_Data(int percent, int lux );
 
@@ -167,7 +182,14 @@ int main(void)
   MX_ETH_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
+  MX_I2C1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+  // inicjalizacja czujnika
+  BH1750_Init(&hbh1750_1);
 
   HAL_UART_Receive_IT(&huart3, (uint8_t*)json_data, 26);
 
@@ -177,9 +199,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	luks_odczytane = (int)(BH1750_ReadLux(&hbh1750_1));
+	uchyb = luks_ustawione - luks_odczytane;
+	RED_procent += (int)(k*uchyb);
+	if(RED_procent > 1000){
+		RED_procent = 1000;
+	}
+	if(RED_procent < 0){
+			RED_procent = 0;
+	}
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_procent);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	HAL_Delay(200);
   }
   /* USER CODE END 3 */
 }
@@ -229,8 +262,10 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_I2C1
+                              |RCC_PERIPHCLK_CLK48;
   PeriphClkInitStruct.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+  PeriphClkInitStruct.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
   PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLL;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
