@@ -73,6 +73,8 @@ int luks_ustawione = 50;
 // odczytywane w petli
 int luks_odczytane = 50;
 int uchyb = 0;
+int licznik_en = 0;
+int connected = 0;
 // stale
 float k = 0.5;
 
@@ -80,6 +82,7 @@ void transmit_IT_Json_Data(int percent, int lux );
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart-> Instance == USART3){
+	  connected = 1;
 
 	  //char json_data [26]="{\"lux\":1000,\"percent\":100}";
 
@@ -120,7 +123,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
 	   }
-
+	   luks_ustawione = percent[0];
+	   lux[0] = luks_odczytane;
 	   // ...
 	   // Tutaj powinna być funkcja, która weźmie percent[0] jako argument i przetworzy na LUX
 	   // ...
@@ -141,8 +145,8 @@ void transmit_IT_Json_Data(int percent, int lux ){
 		char new_Json_Data[26];
 
 		// Jak będzie rzeczywisty lux, to będziesz mógł zastąpić: oszukane_lux -> lux
-		int oszukane_lux = percent + 100;
-		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", oszukane_lux, percent);
+		//int oszukane_lux = percent + 100;
+		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", lux, percent);
 		//....
 
 		HAL_UART_Transmit_IT(&huart3, (uint8_t*)new_Json_Data, n);
@@ -184,15 +188,19 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_I2C1_Init();
   MX_TIM3_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+  HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
   // inicjalizacja czujnika
   BH1750_Init(&hbh1750_1);
 
   HAL_UART_Receive_IT(&huart3, (uint8_t*)json_data, 26);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_procent);
 
+  char new_Json_Data[26];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -200,7 +208,8 @@ int main(void)
   while (1)
   {
 	luks_odczytane = (int)(BH1750_ReadLux(&hbh1750_1));
-	uchyb = luks_ustawione - luks_odczytane;
+	uchyb = (luks_ustawione - luks_odczytane)*1000;
+	uchyb = uchyb/luks_ustawione;
 	RED_procent += (int)(k*uchyb);
 	if(RED_procent > 1000){
 		RED_procent = 1000;
@@ -209,10 +218,19 @@ int main(void)
 			RED_procent = 0;
 	}
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_procent);
+	BLUE_procent = __HAL_TIM_GET_COUNTER(&htim4);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, BLUE_procent);
+
+	if(connected == 1){
+		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", luks_odczytane, luks_ustawione);
+
+		HAL_UART_Transmit(&huart3, (uint8_t*)new_Json_Data, n, 100);
+	}
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	HAL_Delay(200);
+	HAL_Delay(250);
   }
   /* USER CODE END 3 */
 }
