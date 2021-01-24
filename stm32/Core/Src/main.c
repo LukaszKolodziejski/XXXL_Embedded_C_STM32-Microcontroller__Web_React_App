@@ -76,7 +76,7 @@ int uchyb = 0;
 int licznik_en = 0;
 int connected = 0;
 // stale
-float k = 0.5;
+float k = 1;
 
 void transmit_IT_Json_Data(int percent, int lux );
 
@@ -208,8 +208,8 @@ int main(void)
   while (1)
   {
 	luks_odczytane = (int)(BH1750_ReadLux(&hbh1750_1));
-	uchyb = (luks_ustawione - luks_odczytane)*1000;
-	uchyb = uchyb/luks_ustawione;
+	uchyb = (luks_ustawione - luks_odczytane);
+	//uchyb = uchyb/luks_ustawione;
 	RED_procent += (int)(k*uchyb);
 	if(RED_procent > 1000){
 		RED_procent = 1000;
