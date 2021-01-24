@@ -15,7 +15,8 @@ const App = () => {
   useEffect(() => {
     let delay = 1100;
     setInterval(() => {
-      delay = serialPort !== null ? 1100 : 500;
+      // delay = serialPort !== null ? 1100 : 500;
+      delay = serialPort !== null ? 350 : 350;
       if (activeState) {
         axios
           .get("/leds.json")

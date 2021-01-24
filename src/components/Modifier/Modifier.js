@@ -4,9 +4,7 @@ import styles from "./Modifier.module.css";
 const Modifier = (props) => {
   return (
     <div className={styles.Modifier}>
-      <div className={styles.Modifier__Percent}>
-        Set: {props.percent * 10} lux
-      </div>
+      <div className={styles.Modifier__Percent}>Set: {props.percent} lux</div>
       <div className={styles.Modifier__Block}>
         <div
           className={styles.Modifier__Zip}
