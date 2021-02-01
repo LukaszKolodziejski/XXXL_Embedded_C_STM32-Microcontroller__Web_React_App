@@ -64,19 +64,25 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 
 char json_data[26];
-// sterowany przez www
-int RED_procent = 0;
-// BLUE prawdopodobnie sterowany bedzie enkoderem
-int BLUE_procent = 0;
-// odczytywane przez www
-int luks_ustawione = 50;
-// odczytywane w petli
-int luks_odczytane = 50;
-int uchyb = 0;
-int licznik_en = 0;
+
+// RED -> controlled by Web App
+int RED_percent = 0;
+
+// BLUE -> controlled by Encoder
+int BLUE_percent = 0;
+
+// read from Web App
+int luks_set = 50;
+
+// read in a loop
+int luks_read = 50;
+int deviation = 0; // PL - "Uchyb"
+int counter_en = 0;
 int connected = 0;
-// stale
+
+// constant
 float k = 1;
+
 
 void transmit_IT_Json_Data(int percent, int lux );
 
@@ -123,17 +129,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 			HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
 	   }
-	   luks_ustawione = percent[0];
-	   lux[0] = luks_odczytane;
-	   // ...
-	   // Tutaj powinna być funkcja, która weźmie percent[0] jako argument i przetworzy na LUX
-	   // ...
+	   luks_set = percent[0];
+	   lux[0] = luks_read;
 
-	   // Tą funkcję niżej możesz przenieść tam gdzie będzie nowa przetworzona wartość Lux
-	   // ..................np. transmit_IT_Json_Data(old_Percent, new_Lux );
 	   transmit_IT_Json_Data(percent[0], lux[0] );
-	   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 	   HAL_UART_Receive_IT(&huart3, (uint8_t*)json_data, 26);
 
@@ -144,10 +143,7 @@ void transmit_IT_Json_Data(int percent, int lux ){
 	if((0 <= percent) && (percent <= 100) && (0 <= lux) && (lux <= 1000)){
 		char new_Json_Data[26];
 
-		// Jak będzie rzeczywisty lux, to będziesz mógł zastąpić: oszukane_lux -> lux
-		//int oszukane_lux = percent + 100;
 		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", lux, percent);
-		//....
 
 		HAL_UART_Transmit_IT(&huart3, (uint8_t*)new_Json_Data, n);
 	}
@@ -194,11 +190,12 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
   HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
-  // inicjalizacja czujnika
+
+  // sensor initialization
   BH1750_Init(&hbh1750_1);
 
   HAL_UART_Receive_IT(&huart3, (uint8_t*)json_data, 26);
-  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_procent);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_percent);
 
   char new_Json_Data[26];
   /* USER CODE END 2 */
@@ -207,22 +204,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	luks_odczytane = (int)(BH1750_ReadLux(&hbh1750_1));
-	uchyb = (luks_ustawione - luks_odczytane);
-	//uchyb = uchyb/luks_ustawione;
-	RED_procent += (int)(k*uchyb);
-	if(RED_procent > 1000){
-		RED_procent = 1000;
-	}
-	if(RED_procent < 0){
-			RED_procent = 0;
-	}
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_procent);
-	BLUE_procent = __HAL_TIM_GET_COUNTER(&htim4);
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, BLUE_procent);
+	luks_read = (int)(BH1750_ReadLux(&hbh1750_1));
+	deviation = (luks_set - luks_read);
+	RED_percent += (int)(k*deviation);
+
+	if(RED_percent > 1000) RED_percent = 1000;
+	if(RED_percent < 0)	RED_percent = 0;
+	
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, RED_percent);
+	BLUE_percent = __HAL_TIM_GET_COUNTER(&htim4);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, BLUE_percent);
 
 	if(connected == 1){
-		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", luks_odczytane, luks_ustawione);
+		int n=sprintf (new_Json_Data, "{\"lux\":%d,\"percent\":%d}", luks_read, luks_set);
 
 		HAL_UART_Transmit(&huart3, (uint8_t*)new_Json_Data, n, 100);
 	}
