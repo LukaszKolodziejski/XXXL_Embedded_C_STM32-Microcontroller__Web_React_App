@@ -24,6 +24,9 @@
   font-weight: bold;
   transition: 0.3s;
 }
+.Led::selection {
+  background-color: transparent;
+}
 
 .Led:hover {
   transform: translateX(5px);

@@ -1,5 +1,0 @@
-main.c:83:6:HAL_UART_RxCpltCallback	32	static
-main.c:143:6:transmit_IT_Json_Data	48	static
-main.c:162:5:main	40	static
-main.c:242:6:SystemClock_Config	216	static
-main.c:302:6:Error_Handler	4	static
