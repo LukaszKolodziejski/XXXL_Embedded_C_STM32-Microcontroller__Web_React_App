@@ -38,7 +38,7 @@ Automatic Regulator
  
  ---
 
-[![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/tree/main/src/images/1.Schematic_diagram.png)]
+> [![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/tree/main/src/images/1.Schematic_diagram.png)]
 
 ---
 
