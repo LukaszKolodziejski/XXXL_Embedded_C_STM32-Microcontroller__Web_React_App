@@ -1,6 +1,6 @@
 ## XXXL_Embedded_C_STM32-Microcontroller__Web_React_App // 01.2021
 
-### Remote lighting control with a regulator & Web application & Encoder & RGB LED
+#### Remote lighting control with a regulator & Web application & Encoder & RGB LED
 
 > #### I connected here a lot of technologies in one place:
 >
@@ -31,7 +31,7 @@ Automatic Regulator
 
 ---
 
-> ## 2. Pointer on one Server:
+> ## 2. Electrical diagrams of individual elements:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/2.Electrical_diagrams_of_individual_elements.png)
 
@@ -41,7 +41,7 @@ Automatic Regulator
 
 ---
 
-> ## 3. Dropdown for different statuses:
+> ## 3. Whole STM32 chip with connected components:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/3.Whole_STM32_chip_with_connected_components.png)
 
@@ -51,7 +51,7 @@ Automatic Regulator
 
 ---
 
-> ## 4. Animation -> "Turn Off":
+> ## 4. The structure of the web application and data flow between components:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/4.The_structure_of_the_web_application_and_data_flow_between_components.png)
 
@@ -61,7 +61,7 @@ Automatic Regulator
 
 ---
 
-> ## 5. Animation -> "Turn On":
+> ## 5. Operation of the application not connected to the serial port:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/5.Operation_of_the_application_not_connected_to_the_serial_port.png)
 
@@ -71,7 +71,7 @@ Automatic Regulator
 
 ---
 
-> ## 6. Animation -> "Rebooting":
+> ## 6. Connecting the application with the serial port:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/6.Connecting_the_application_with_the_serial_port.png)
 
@@ -81,7 +81,7 @@ Automatic Regulator
 
 ---
 
-> ## 7. Fast changes statuses:
+> ## 7. System control from the web application through the serial port:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/7.System_control_from_the_web_application_through_the_serial_port.png)
 
@@ -91,7 +91,7 @@ Automatic Regulator
 
 ---
 
-> ## 8. Search engine (appearance and operation):
+> ## 8. System control from the web application through the serial port (part 2):
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/8.System_control_from_the_web_application_through_the_serial_port.png)
 
@@ -101,7 +101,7 @@ Automatic Regulator
 
 ---
 
-> ## 9. Show the number of servers found:
+> ## 9. Additional encoder control:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/9.Additional_encoder_control.png)
 
@@ -111,7 +111,7 @@ Automatic Regulator
 
 ---
 
-> ## 10. Show only searched servers:
+> ## 10. Remote control of the system:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/10.Remote_control_of_the_system.png)
 
@@ -121,7 +121,7 @@ Automatic Regulator
 
 ---
 
-> ## 11. Change the status of the searched servers:
+> ## 11. Real-time display of measurements on a smartphone:
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/11.Real-time_display_of_measurements_on_a_smartphone.png)
 
@@ -131,7 +131,7 @@ Automatic Regulator
 
 ---
 
-> ## 12. Cleaning the search engine:
+> ## 12. Real-time display of measurements on a smartphone (part 2):
 >
 > ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/12.Real-time_display_of_measurements_on_a_smartphone.png)
 
