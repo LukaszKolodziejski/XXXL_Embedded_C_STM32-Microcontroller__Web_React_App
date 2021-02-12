@@ -17,7 +17,7 @@ Automatic Regulator
 
 > # How it works ? (12 Steps)
 >
-> ## I want to show the most important details and possibilities of my project here :) (only 2 min)
+> ### I want to show the most important details and possibilities of my project here :) (only 2 min)
 
 ---
 
