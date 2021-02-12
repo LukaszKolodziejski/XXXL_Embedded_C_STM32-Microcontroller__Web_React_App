@@ -11,7 +11,7 @@ JavaScript                 React.js           STM32           C       GPIO     I
 NUCLEO-F746ZG              Web Serial API     Axios           Light intensity sensor BH1750
 ES6                        CSS Modules        asynchronous components               Encoder     
 CSS3                       HTML5              REST API                                  MVP
-RGB LED                    Serial Port        ADC - Analog to digital converter      Timers
+RGB LED                    Serial Port        ADC - Analog to Digital Converter      Timers
 Automatic Regulator
 ```
 
