@@ -1,6 +1,6 @@
 ## XXXL_Embedded_C_STM32-Microcontroller__Web_React_App // 01.2021
 
-#### Remote lighting control with a regulator & Web application & Encoder & RGB LED
+#### Remote lighting control with a regulator / Web application / Encoder / RGB LED
 
 > #### I connected here a lot of technologies in one place:
 >
