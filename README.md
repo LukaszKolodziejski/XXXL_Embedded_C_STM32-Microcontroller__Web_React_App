@@ -1,17 +1,6 @@
-## XXXL_Embedded_C_STM32-Microcontroller\_\_Web_React_App
+## XXXL_Embedded_C_STM32-Microcontroller__Web_React_App // 01.2021
 
-### Step 0: (Configuration: Web Serial API - Only one)
-
-#### Click this link // Change to "Enabled" // Click "Relaunch"
-
-[chrome://flags/#enable-experimental-web-platform-features](chrome://flags/#enable-experimental-web-platform-features)
-
-
-/////
-
-> ## XXXL_Embedded_C_STM32-Microcontroller__Web_React_App // 01.2021
->
-> > ### Remote lighting control with a regulator & Web application & Encoder & RGB LED
+### Remote lighting control with a regulator & Web application & Encoder & RGB LED
 
 > #### I connected here a lot of technologies in one place:
 >
@@ -44,7 +33,7 @@ Automatic Regulator
 
 > ## 2. Pointer on one Server:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/2-show-oneserver.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/2.Electrical_diagrams_of_individual_elements.png)
 
 ---
 
@@ -54,7 +43,7 @@ Automatic Regulator
 
 > ## 3. Dropdown for different statuses:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/3-dropdown.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/3.Whole_STM32_chip_with_connected_components.png)
 
 ---
 
@@ -64,7 +53,7 @@ Automatic Regulator
 
 > ## 4. Animation -> "Turn Off":
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/4-turnoff.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/4.The_structure_of_the_web_application_and_data_flow_between_components.png)
 
 ---
 
@@ -74,7 +63,7 @@ Automatic Regulator
 
 > ## 5. Animation -> "Turn On":
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/5-turnon.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/5.Operation_of_the_application_not_connected_to_the_serial_port.png)
 
 ---
 
@@ -84,7 +73,7 @@ Automatic Regulator
 
 > ## 6. Animation -> "Rebooting":
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/6-rebooting.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/6.Connecting_the_application_with_the_serial_port.png)
 
 ---
 
@@ -94,7 +83,7 @@ Automatic Regulator
 
 > ## 7. Fast changes statuses:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/7-fast-changes.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/7.System_control_from_the_web_application_through_the_serial_port.png)
 
 ---
 
@@ -104,7 +93,7 @@ Automatic Regulator
 
 > ## 8. Search engine (appearance and operation):
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/8-search-look.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/8.System_control_from_the_web_application_through_the_serial_port.png)
 
 ---
 
@@ -114,7 +103,7 @@ Automatic Regulator
 
 > ## 9. Show the number of servers found:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/9-search-number.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/9.Additional_encoder_control.png)
 
 ---
 
@@ -124,7 +113,7 @@ Automatic Regulator
 
 > ## 10. Show only searched servers:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/10-search-work.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/10.Remote_control_of_the_system.png)
 
 ---
 
@@ -134,7 +123,7 @@ Automatic Regulator
 
 > ## 11. Change the status of the searched servers:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/11-search-status.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/11.Real-time_display_of_measurements_on_a_smartphone.png)
 
 ---
 
@@ -144,7 +133,7 @@ Automatic Regulator
 
 > ## 12. Cleaning the search engine:
 >
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/12-search-clear.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+> ![text](https://github.com/LukaszKolodziejski/XXXL_Embedded_C_STM32-Microcontroller__Web_React_App/blob/main/src/images/12.Real-time_display_of_measurements_on_a_smartphone.png)
 
 ---
 
@@ -152,16 +141,7 @@ Automatic Regulator
 
 ---
 
-> ## 13. Responsive View from large Desktop to Mobile Version:
->
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/13-responsive-view.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
+### (Configuration: Web Serial API)
 
----
+[chrome://flags/#enable-experimental-web-platform-features](chrome://flags/#enable-experimental-web-platform-features)
 
----
-
----
-
-> ## 14. Fast summary all of Steps:
->
-> [![Demo CountPages alpha](https://github.com/LukaszKolodziejski/managing-servers-2/blob/master/videoGIF/14-fast-summary.gif)](https://github.com/LukaszKolodziejski/managing-servers-1)
